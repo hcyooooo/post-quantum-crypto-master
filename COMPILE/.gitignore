@@ -5,4 +5,5 @@
 *.map
 *.srec
 compile/slm/*
+!compile/slm/readme.md
 compile/deploy.sh
