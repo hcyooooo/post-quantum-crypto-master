@@ -1,3 +1,5 @@
+// Modifications of original source by Tim Fritzmann (Technical University of Munich, tim.fritzmann@tum.de)
+
 // Copyright 2017 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the “License”); you may not use this file except in
@@ -137,8 +139,53 @@ module apb_gpio
             r_gpio_out      <=  '0;
             r_gpio_dir      <=  '0;
             r_powerevent    <=  '0;
-            for (int i=0;i<32;i++)
-                gpio_padcfg[i]  <=  6'b000010; // DS=high, PE=disabled
+
+            // 0000_0000_0000_0000_0001_1100_0000
+            // 0000_0001_1111_1111_1110_0000_1111
+            // 0000_0000_0000_0000_1110_0001_0000
+            // 0001_1111_1111_1111_1111_1111_1111
+            // 0000_0000_0000_0000_0000_0000_0000
+            // 0000_0000_0000_0000_0000_0000_0000
+
+            gpio_padcfg[0] <= 6'b001010;
+            gpio_padcfg[1] <= 6'b001010;
+            gpio_padcfg[2] <= 6'b001010;
+            gpio_padcfg[3] <= 6'b001010;
+
+            gpio_padcfg[4] <= 6'b001100;
+            gpio_padcfg[5] <= 6'b001000;
+            gpio_padcfg[6] <= 6'b001001;
+            gpio_padcfg[7] <= 6'b001001;
+
+            gpio_padcfg[8] <= 6'b001001;
+            gpio_padcfg[9] <= 6'b001110;
+            gpio_padcfg[10] <= 6'b001110;
+            gpio_padcfg[11] <= 6'b001110;
+
+            gpio_padcfg[12] <= 6'b001010;
+            gpio_padcfg[13] <= 6'b001010;
+            gpio_padcfg[14] <= 6'b001010;
+            gpio_padcfg[15] <= 6'b001010;
+
+            gpio_padcfg[16] <= 6'b001010;
+            gpio_padcfg[17] <= 6'b001010;
+            gpio_padcfg[18] <= 6'b001010;
+            gpio_padcfg[19] <= 6'b001010;
+
+            gpio_padcfg[20] <= 6'b001010;
+            gpio_padcfg[21] <= 6'b001000;
+            gpio_padcfg[22] <= 6'b001000;
+            gpio_padcfg[23] <= 6'b001000;
+
+            gpio_padcfg[24] <= 6'b001000;
+            gpio_padcfg[25] <= 6'b000000;
+            gpio_padcfg[26] <= 6'b000000;
+            gpio_padcfg[27] <= 6'b000000;
+
+            gpio_padcfg[28] <= 6'b000000;
+            gpio_padcfg[29] <= 6'b000000;
+            gpio_padcfg[30] <= 6'b000000;
+            gpio_padcfg[31] <= 6'b000000;
         end
         else
         begin

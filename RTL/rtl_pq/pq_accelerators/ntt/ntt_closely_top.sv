@@ -11,7 +11,7 @@
 
 module ntt_closely_top
   #(
-    parameter ADDR_WIDTH    = 6,
+    parameter ADDR_WIDTH    = 5,
     parameter DATA_WIDTH    = 32
   )
   (
@@ -50,9 +50,9 @@ module ntt_closely_top
     output logic pq_id_alu_we2,
     
     // Signals - PQ Register File 
-    output logic [DATA_WIDTH-1:0]   wdata_pq_o [2**(ADDR_WIDTH-1)-1:0],
-    output logic [2**(ADDR_WIDTH-1)-1:0] we_pq_o,
-    input logic [DATA_WIDTH-1:0] rdata_pq_i [2**(ADDR_WIDTH-1)-1:0]
+    output logic [DATA_WIDTH-1:0]   wdata_pq_o [2**(ADDR_WIDTH)-1:0],
+    output logic [2**(ADDR_WIDTH)-1:0] we_pq_o,
+    input logic [DATA_WIDTH-1:0] rdata_pq_i [2**(ADDR_WIDTH)-1:0]
   );
   
   // Signals - Address Unit
@@ -60,8 +60,8 @@ module ntt_closely_top
   logic [ADDR_WIDTH-1:0]  raddr2;
   logic [ADDR_WIDTH-1:0]  waddr1;
   logic [ADDR_WIDTH-1:0]  waddr2;
-  logic [2**(ADDR_WIDTH-1)-1:0] we;
-  logic [2**(ADDR_WIDTH-1)-1:0] we_pq_reg;
+  logic [2**(ADDR_WIDTH)-1:0] we;
+  logic [2**(ADDR_WIDTH)-1:0] we_pq_reg;
   logic run_loop;
   
   // Signals - Omega Update

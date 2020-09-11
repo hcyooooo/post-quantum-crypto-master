@@ -32,39 +32,39 @@ module binom_sample
   begin
     unique case (mode)
      2'b000: begin
-       modulus <= 3329;
-       cnt1 <= cnt1_2;
-       cnt2 <= cnt2_2;
-       cnt3 <= cnt3_2;
-       cnt4 <= cnt4_2;
+       modulus = 3329;
+       cnt1 = cnt1_2;
+       cnt2 = cnt2_2;
+       cnt3 = cnt3_2;
+       cnt4 = cnt4_2;
      end
      2'b001: begin
-       modulus <= 8192;
-       cnt1 <= cnt1_3;
-       cnt2 <= cnt2_3;
-       cnt3 <= cnt3_3;
-       cnt4 <= cnt4_3;
+       modulus = 8192;
+       cnt1 = cnt1_3;
+       cnt2 = cnt2_3;
+       cnt3 = cnt3_3;
+       cnt4 = cnt4_3;
      end
      2'b010: begin
-       modulus <= 8192;
-       cnt1 <= cnt1_4;
-       cnt2 <= cnt2_4;
-       cnt3 <= cnt3_4;
-       cnt4 <= cnt4_4;
+       modulus = 8192;
+       cnt1 = cnt1_4;
+       cnt2 = cnt2_4;
+       cnt3 = cnt3_4;
+       cnt4 = cnt4_4;
      end
      2'b011: begin
-       modulus <= 8192;
-       cnt1 <= cnt1_5;
-       cnt2 <= cnt2_5;
-       cnt3 <= cnt3_5;
-       cnt4 <= cnt4_5;
+       modulus = 8192;
+       cnt1 = cnt1_5;
+       cnt2 = cnt2_5;
+       cnt3 = cnt3_5;
+       cnt4 = cnt4_5;
      end
      default: begin
-       modulus <= 12289;
-       cnt1 <= cnt1_8;
-       cnt2 <= cnt2_8;
-       cnt3 <= cnt3_8;
-       cnt4 <= cnt4_8;
+       modulus = 12289;
+       cnt1 = cnt1_8;
+       cnt2 = cnt2_8;
+       cnt3 = cnt3_8;
+       cnt4 = cnt4_8;
      end    
     endcase
   end

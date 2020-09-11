@@ -91,7 +91,7 @@ module pq_accelerators_id
 
   `ifdef HW_ACCEL_ID_NTT
     ////////////////////////////////////////
-    //               NTT               /////
+    ////             NTT               /////
     ////////////////////////////////////////
   
     // Set NTT signals
@@ -120,21 +120,21 @@ module pq_accelerators_id
     always_ff @(posedge clk, negedge rst_n)
     begin
       if (rst_n == 1'b0) begin
-        param_n = 11'h100;
-        modulus = 16'h1e01;
-        param_MinQinvModR = 18'h1dff;
+        param_n <= 11'h100;
+        modulus <= 16'h1e01;
+        param_MinQinvModR <= 18'h1dff;
       end else if (set_n_256 == 1'b1) begin
-        param_n = 11'h100;
-        modulus = 16'h0d01;
-        param_MinQinvModR = 18'h30CFF;
+        param_n <= 11'h100;
+        modulus <= 16'h0d01;
+        param_MinQinvModR <= 18'h30CFF;
       end else if (set_n_512 == 1'b1) begin
-        param_n = 11'h200;
-        modulus = 16'h3001;
-        param_MinQinvModR = 18'h2fff;
+        param_n <= 11'h200;
+        modulus <= 16'h3001;
+        param_MinQinvModR <= 18'h2fff;
       end else if (set_n_1024 == 1'b1) begin
-        param_n = 11'h400;
-        modulus = 16'h3001;
-        param_MinQinvModR = 18'h2fff;
+        param_n <= 11'h400;
+        modulus <= 16'h3001;
+        param_MinQinvModR <= 18'h2fff;
       end
     end
   
@@ -185,7 +185,7 @@ module pq_accelerators_id
   
   `ifdef HW_ACCEL_ID_KECCAK
     ////////////////////////////////////////
-    //             Keccak              /////
+    ////           Keccak              /////
     ////////////////////////////////////////
   
     assign input_state = {rdata_pq_gp_i,rdata_pq_i};

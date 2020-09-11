@@ -28,7 +28,7 @@ module address_unit_register
   output logic [ADDR_WIDTH-1:0] raddr2_o,
   output logic [ADDR_WIDTH-1:0] waddr1_o,
   output logic [ADDR_WIDTH-1:0] waddr2_o,
-  output logic [2**(ADDR_WIDTH-1)-1:0] we_o
+  output logic [2**(ADDR_WIDTH)-1:0] we_o
 );
 
 localparam PARAM_LOG_MAX_N_HALF = 10;
@@ -112,7 +112,6 @@ begin
       update_omega <= 0;
       update_m <= 1;
   end else begin
-    update_m <= 0;
     if (k < 32 - m) begin
       k <= k + m;
       update_omega <= 0;
@@ -121,14 +120,17 @@ begin
       if (j < (m>>1) - 1) begin
         j <= j + 1;
         update_omega <= 1'b1;
+        update_m <= 0;
       end else begin
         j <= 0;
-        update_omega <= 0;
         if (m < 32) begin
           m <= m << 1;
           update_m <= 1;
           index_int <= index_int + 1;
           update_omega <= 1;
+        end else begin
+          update_omega <= 0;
+          update_m <= 0;
         end
       end
     end
@@ -165,8 +167,8 @@ begin
     waddr1_o = k_reg + j_reg;
     waddr2_o = k_reg + j_reg + (m_reg >> 1);
     we_o = 0;
-    we_o[k_reg + j_reg] = 1'b1;
-    we_o[k_reg + j_reg + (m_reg >> 1)] = 1'b1;       
+    we_o[waddr1_o] = 1'b1;
+    we_o[waddr2_o] = 1'b1;       
   end else begin
     waddr1_o = 0;
     waddr2_o = 1;

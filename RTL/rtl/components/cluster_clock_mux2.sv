@@ -1,3 +1,5 @@
+// Modifications of original source by Tim Fritzmann (Technical University of Munich, tim.fritzmann@tum.de)
+
 // Copyright 2017 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the “License”); you may not use this file except in
@@ -16,12 +18,11 @@ module cluster_clock_mux2
     output logic clk_o
   );
 
-  always_comb
-  begin
-    if (clk_sel_i == 1'b0)
-      clk_o = clk0_i;
-    else
-      clk_o = clk1_i;
-  end
+  pulp_clock_mux2 pcm (
+    .clk0_i(clk0_i),
+    .clk1_i(clk1_i),
+    .clk_sel_i(clk_sel_i),
+    .clk_o(clk_o)
+  );
 
 endmodule

@@ -35,17 +35,6 @@ module clk_rst_gen_pulpino
     output logic                            rstn_o
 );
 
-  logic clk_fll_int;
-  logic clk_int;
-
-  cluster_clock_mux2
-  clk_mux_i
-  (
-      .clk_sel_i ( clk_sel_i     ),
-      .clk0_i    ( clk_i         ),
-      .clk1_i    ( clk_fll_int   ),
-      .clk_o     ( clk_int       )
-  );
 
   //----------------------------------------------------------------------------//
   // FLL
@@ -86,7 +75,7 @@ module clk_rst_gen_pulpino
   rstgen i_rst_gen_soc
   (
       // PAD FRAME SIGNALS
-      .clk_i               ( clk_int         ),
+      .clk_i               ( clk_i           ),
       .rst_ni              ( rstn_i          ),
 
       // TEST MODE
@@ -98,6 +87,6 @@ module clk_rst_gen_pulpino
   );
 
 
-  assign clk_o = clk_int;
+  assign clk_o = clk_i;
 
 endmodule

@@ -191,7 +191,7 @@ module keccak_f(
   begin
     for (integer i=0; i<50; i++)
     begin
-      zero_state[i] <= 2'b00;
+      zero_state[i] = 2'b00;
     end
   end
   

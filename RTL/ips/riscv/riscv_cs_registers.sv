@@ -1,3 +1,5 @@
+// Modifications of original source by Tim Fritzmann (Technical University of Munich, tim.fritzmann@tum.de)
+
 // Copyright 2017 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the “License”); you may not use this file except in
@@ -702,6 +704,7 @@ end //PULP_SECURE
   assign PCCR_in[8]  = branch_i                   & id_valid_q; // nr of branches (conditional)
   assign PCCR_in[9]  = branch_i & branch_taken_i  & id_valid_q; // nr of taken branches (conditional)
   assign PCCR_in[10] = id_valid_i & is_decoding_i & is_compressed_i;  // compressed instruction counter
+  assign PCCR_in[11] = 1'b0;
 
   if (APU == 1) begin
      assign PCCR_in[PERF_APU_ID  ] = apu_typeconflict_i & ~apu_dep_i;

@@ -223,7 +223,8 @@ set INC_ZERORISCY " \
 set SRC_AXI_SLICE_DC " \
     $IPS/axi/axi_slice_dc/axi_slice_dc_master.sv \
     $IPS/axi/axi_slice_dc/axi_slice_dc_slave.sv \
-    $IPS/axi/axi_slice_dc/dc_data_buffer.v \
+    $IPS/axi/axi_slice_dc/dc_data_buffer.sv \
+    $IPS/axi/axi_slice_dc/onehot_to_bin.sv \
     $IPS/axi/axi_slice_dc/dc_full_detector.v \
     $IPS/axi/axi_slice_dc/dc_synchronizer.v \
     $IPS/axi/axi_slice_dc/dc_token_ring_fifo_din.v \

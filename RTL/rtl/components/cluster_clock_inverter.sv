@@ -1,3 +1,5 @@
+// Modifications of original source by Tim Fritzmann (Technical University of Munich, tim.fritzmann@tum.de)
+
 // Copyright 2017 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the “License”); you may not use this file except in
@@ -14,6 +16,9 @@ module cluster_clock_inverter
     output logic clk_o
   );
 
-  assign clk_o = ~clk_i;
+  pulp_clock_inverter pci (
+    .clk_i(clk_i),
+    .clk_o(clk_o)
+  );
 
 endmodule

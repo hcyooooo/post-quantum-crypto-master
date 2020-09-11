@@ -1,5 +1,3 @@
-// Modifications of original source by Tim Fritzmann (Technical University of Munich, tim.fritzmann@tum.de)
-
 // Copyright 2017 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the “License”); you may not use this file except in
@@ -10,18 +8,12 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-module cluster_clock_gating
+module pulp_clock_inverter
 (
     input  logic clk_i,
-    input  logic en_i,
-    input  logic test_en_i,
     output logic clk_o
   );
 
-  pulp_clock_gating pgg (.clk_i(clk_i),
-    .en_i(en_i),
-    .test_en_i(test_en_i),
-    .clk_o(clk_o)
-  );
+  CKINVM1S ck_inv (.A(clk_i), .Z(clk_o));
 
 endmodule

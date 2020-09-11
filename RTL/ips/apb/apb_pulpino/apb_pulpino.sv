@@ -1,3 +1,5 @@
+// Modifications of original source by Tim Fritzmann (Technical University of Munich, tim.fritzmann@tum.de)
+
 // Copyright 2017 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the “License”); you may not use this file except in
@@ -64,7 +66,7 @@ module apb_pulpino
 
     logic [3:0]   register_adr;
 
-    logic [1:0]   status_n, status_q;
+    logic [31:0]   status_n, status_q;
 
     assign register_adr = PADDR[5:2];
 
@@ -154,7 +156,7 @@ module apb_pulpino
                 end
 
                 `REG_STATUS: begin
-                    status_n = PWDATA[1:0];
+                    status_n = PWDATA;
                 end
 
                 // version reg can't be written to
@@ -209,7 +211,7 @@ module apb_pulpino
                     PRDATA = {4'b0000, `DCACHE, `ICACHE, `ROM, `INSTR_RAM, `DATA_RAM,`VERSION};
 
                 `REG_STATUS:
-                    PRDATA = {30'b0, status_q[1:0]};
+                    PRDATA = status_q;
 
                 default:
                     PRDATA = 'b0;
