@@ -5,6 +5,6 @@ In order to integrate the new PQ instruction in the compiler, the *files pulp-ri
 cd pulp-riscv-gnu-toolchain
 sudo make clean
 sudo rm -r /opt/risq-v
-./configure --prefix=/opt/risq-v --with-arch=rv32imfcxpulpv3 --with-abi=ilp32 --with-cmodel=medlow
+./configure --prefix=/opt/risqv --with-arch=rv32imfcxpulpv3 --with-abi=ilp32 --with-cmodel=medlow
 sudo make
 ```

@@ -26,7 +26,7 @@ The PULP toolchain can be installed with:
 ```bash
 git clone --recursive https://github.com/pulp-platform/pulp-riscv-gnu-toolchain
 sudo apt-get install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev
-./configure --prefix=/opt/risq-v --with-arch=rv32imfcxpulpv3 --with-abi=ilp32 --with-cmodel=medlow
+./configure --prefix=/opt/risqv --with-arch=rv32imfcxpulpv3 --with-abi=ilp32 --with-cmodel=medlow
 make
 ```
 
@@ -38,7 +38,7 @@ The official RISC-V compiler can be installed with:
 ```bash
 git clone --recursive https://github.com/riscv/riscv-gnu-toolchain
 sudo apt-get install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev
-./configure --prefix=/opt/riscv --with-arch=rv32imc --with-abi=ilp32
+./configure --prefix=/opt/risqv --with-arch=rv32imc --with-abi=ilp32
 make
 ```
 
