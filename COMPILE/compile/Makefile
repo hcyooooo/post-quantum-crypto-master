@@ -1,7 +1,7 @@
 ########################
 ### General settings ###
 ########################
-PREFIX?=/opt/risqv/bin/riscv32-unknown-elf-
+PREFIX?=/opt/riscv-pulp/bin/riscv32-unknown-elf-
 CC=$(PREFIX)gcc
 AS=$(CC) -x assembler-with-cpp
 OBJCOPY=$(PREFIX)objcopy
