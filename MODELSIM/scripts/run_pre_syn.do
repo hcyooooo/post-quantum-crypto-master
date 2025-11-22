@@ -80,7 +80,9 @@ vlog -sv +define+SYNTHESIS -timescale "1 ns / 1 ps" ../../RTL/tb/i2c_eeprom_mode
 
 
 # Run Simultaion
-vsim -novopt -t ps tb
+#vsim -novopt -t ps tb
+vopt tb +acc -o tb_opt
+vsim tb_opt -t ps
 
 
 # Add Traces to Waveform Window
