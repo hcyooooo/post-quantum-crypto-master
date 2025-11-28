@@ -105,4 +105,5 @@ sim:/tb/top_i/core_region_i/data_mem/sp_ram_i/mem
 
 
 # Execution Time (depends on scheme)
-run 24944780 ns
+#run 24944780 ns
+run -all

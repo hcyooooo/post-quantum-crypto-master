@@ -129,6 +129,17 @@ KYBER512SRCS_C = $(KYBER512PREFIX)/cbd.c \
     $(RISCVOPTPREFIX)/notrandombytes.c \
     ../src/bench_targets/kyber512/crypto_kem_bench.c \
 
+### KYBER512 NTT ###
+KYBER512_NTTSRCS_C = $(KYBER512PREFIX)/ntt.c \
+    $(KYBER512PREFIX)/poly.c \
+    $(KYBER512PREFIX)/reduce.c \
+    $(COMMONPREFIX_MUPQ)/fips202.c \
+    $(COMMONPREFIX_MUPQ)/keccakf1600.c \
+    $(RISCVOPTPREFIX)/notrandombytes.c \
+    ../src/bench_targets/kyber512_ntt/kyber512_ntt.c \
+
+
+
 ### KYBER512 HW ###
 KYBER512HWSRCS_C = $(RISCVOPTPREFIX)/kyber512/cbd.c \
     $(RISCVOPTPREFIX)/kyber512/indcpa.c \
