@@ -105,6 +105,11 @@ set SRC_APB_SPI_MASTER " \
     $IPS/apb/apb_spi_master/spi_master_tx.sv \
 "
 
+# apb_ntt
+set SRC_APB_NTT " \
+    $IPS/apb/apb_ntt/apb_ntt_if.sv \
+"
+
 # fpu
 set SRC_FPU " \
     $IPS/fpu/hdl/fpu_utils/fpu_ff.sv \

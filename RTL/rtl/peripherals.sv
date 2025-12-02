@@ -100,7 +100,7 @@ module peripherals
   );
 
   localparam APB_ADDR_WIDTH  = 32;
-  localparam APB_NUM_SLAVES  = 8;
+  localparam APB_NUM_SLAVES  = 9;
 
   APB_BUS s_apb_bus();
 
@@ -112,6 +112,7 @@ module peripherals
   APB_BUS s_i2c_bus();
   APB_BUS s_fll_bus();
   APB_BUS s_soc_ctrl_bus();
+  APB_BUS s_ntt_bus();
   APB_BUS s_debug_bus();
 
   logic [1:0]   s_spim_event;
@@ -121,6 +122,7 @@ module peripherals
   logic         s_uart_event;
   logic         i2c_event;
   logic         s_gpio_event;
+  logic         ntt_irq;
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
@@ -227,6 +229,7 @@ module peripherals
      .i2c_master        ( s_i2c_bus        ),
      .fll_master        ( s_fll_bus        ),
      .soc_ctrl_master   ( s_soc_ctrl_bus   ),
+      .ntt_master        ( s_ntt_bus        ),
      .debug_master      ( s_debug_bus      )
   );
 
@@ -403,8 +406,8 @@ module peripherals
     .PREADY           ( s_event_unit_bus.pready     ),
     .PSLVERR          ( s_event_unit_bus.pslverr    ),
 
-    .irq_i            ( {timer_irq, s_spim_event, s_gpio_event, s_uart_event, i2c_event, 23'b0} ),
-    .event_i          ( {timer_irq, s_spim_event, s_gpio_event, s_uart_event, i2c_event, 23'b0} ),
+  .irq_i            ( {timer_irq, s_spim_event, s_gpio_event, s_uart_event, i2c_event, ntt_irq, 22'b0} ),
+  .event_i          ( {timer_irq, s_spim_event, s_gpio_event, s_uart_event, i2c_event, ntt_irq, 22'b0} ),
     .irq_o            ( irq_o              ),
 
     .fetch_enable_i   ( fetch_enable_i     ),
@@ -482,7 +485,36 @@ module peripherals
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 7: PULPino control                               ///
+  /// APB Slave 7: PQ NTT Accelerator                            ///
+  ///                                                            ///
+  //////////////////////////////////////////////////////////////////
+
+  apb_ntt_if
+  #(
+    .APB_ADDR_WIDTH ( 12 ),
+    .ADDR_WIDTH     ( 5  ),
+    .DATA_WIDTH     ( 32 )
+  )
+  apb_ntt_if_i
+  (
+    .CLK     ( clk_int[8]             ),
+    .RSTN    ( rst_n                  ),
+
+    .PADDR   ( s_ntt_bus.paddr[11:0]  ),
+    .PWDATA  ( s_ntt_bus.pwdata       ),
+    .PWRITE  ( s_ntt_bus.pwrite       ),
+    .PSEL    ( s_ntt_bus.psel         ),
+    .PENABLE ( s_ntt_bus.penable      ),
+    .PRDATA  ( s_ntt_bus.prdata       ),
+    .PREADY  ( s_ntt_bus.pready       ),
+    .PSLVERR ( s_ntt_bus.pslverr      ),
+
+    .IRQ     ( ntt_irq                )
+  );
+
+  //////////////////////////////////////////////////////////////////
+  ///                                                            ///
+  /// APB Slave 8: PULPino control                               ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 
@@ -512,7 +544,7 @@ module peripherals
 
   //////////////////////////////////////////////////////////////////
   ///                                                            ///
-  /// APB Slave 8: APB2PER for debug                             ///
+  /// APB Slave 9: APB2PER for debug                             ///
   ///                                                            ///
   //////////////////////////////////////////////////////////////////
 

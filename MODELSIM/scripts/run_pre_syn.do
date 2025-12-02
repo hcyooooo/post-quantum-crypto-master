@@ -16,6 +16,7 @@ vlog -sv +define+SYNTHESIS {*}$SRC_APB_GPIO
 vlog -sv +define+SYNTHESIS {*}$SRC_APB_EVENT_UNIT {*}+incdir+../../RTL/ips/apb/apb_event_unit/include
 vlog -sv +define+SYNTHESIS {*}$SRC_APB_SPI_MASTER
 vlog -sv +define+SYNTHESIS {*}$SRC_APB_PULPINO
+vlog -sv +define+SYNTHESIS {*}$SRC_APB_NTT
 vlog -sv +define+SYNTHESIS {*}$SRC_APB_FLL_IF 
 vlog -sv +define+SYNTHESIS {*}$SRC_CORE2AXI
 vlog -sv +define+SYNTHESIS {*}$SRC_APB_TIMER
