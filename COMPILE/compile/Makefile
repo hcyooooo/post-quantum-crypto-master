@@ -48,6 +48,7 @@ RISCVOPTPREFIX = ../src/RISCV_optimized_code
 NEWHOPE512PREFIX = ../src/PQClean/crypto_kem/newhope512cca/clean
 NEWHOPE1024PREFIX = ../src/PQClean/crypto_kem/newhope1024cca/clean
 KYBER512PREFIX = ../src/PQClean/crypto_kem/kyber512/clean
+KYBER512LOPREFIX = ../src/loosely_optimized_code/kyber512/clean
 KYBER768PREFIX = ../src/PQClean/crypto_kem/kyber768/clean
 KYBER1024PREFIX = ../src/PQClean/crypto_kem/kyber1024/clean
 LIGHTSABERPREFIX = ../src/PQClean/crypto_kem/lightsaber/clean
@@ -124,6 +125,21 @@ KYBER512SRCS_C = $(KYBER512PREFIX)/cbd.c \
     $(KYBER512PREFIX)/reduce.c \
     $(KYBER512PREFIX)/symmetric-fips202.c \
     $(KYBER512PREFIX)/verify.c \
+    $(COMMONPREFIX_MUPQ)/fips202.c \
+    $(COMMONPREFIX_MUPQ)/keccakf1600.c \
+    $(RISCVOPTPREFIX)/notrandombytes.c \
+    ../src/bench_targets/kyber512/crypto_kem_bench.c \
+
+### KYBER512 LO ###
+KYBER512LOSRCS_C = $(KYBER512LOPREFIX)/cbd.c \
+    $(KYBER512LOPREFIX)/indcpa.c \
+    $(KYBER512LOPREFIX)/kem.c \
+    $(KYBER512LOPREFIX)/ntt.c \
+    $(KYBER512LOPREFIX)/poly.c \
+    $(KYBER512LOPREFIX)/polyvec.c \
+    $(KYBER512LOPREFIX)/reduce.c \
+    $(KYBER512LOPREFIX)/symmetric-fips202.c \
+    $(KYBER512LOPREFIX)/verify.c \
     $(COMMONPREFIX_MUPQ)/fips202.c \
     $(COMMONPREFIX_MUPQ)/keccakf1600.c \
     $(RISCVOPTPREFIX)/notrandombytes.c \
@@ -321,7 +337,7 @@ FIRESABERHWSRCS_C = $(FIRESABERPREFIX)/kem.c \
 ########################
 .PHONY: all clean
 
-all: newhope512_bench newhope512hw_bench newhope1024_bench newhope1024hw_bench kyber512_bench kyber512hw_bench kyber768_bench kyber768hw_bench kyber1024_bench kyber1024hw_bench lightsaber_bench lightsaberhw_bench saber_bench saberhw_bench firesaber_bench firesaberhw_bench
+all: newhope512_bench newhope512hw_bench newhope1024_bench newhope1024hw_bench kyber512_bench kyber512lo_bench kyber512hw_bench kyber768_bench kyber768hw_bench kyber1024_bench kyber1024hw_bench lightsaber_bench lightsaberhw_bench saber_bench saberhw_bench firesaber_bench firesaberhw_bench
 
 
 ########################
@@ -388,6 +404,18 @@ kyber512_bench.elf: $(LIBSRCS:.c=.o) $(LIBSRCS_ASM:.S=.o) $(KYBER512SRCS_C:.c=.o
 
 slm/kyber512_bench.txt: kyber512_bench.srec
 	cd slm && $(SRECTOSLM) ../$^; cp spi_stim.txt ../../../TEST/slm_files; cp spi_stim.txt ../../../TEST/slm_files/kyber512
+
+
+######## KYBER512LO TARGET ########
+kyber512lo_bench: INCDIR += -I../src/loosely_optimized_code/kyber512/clean
+kyber512lo_bench: kyber512lo_bench.elf slm/kyber512lo_bench.txt
+
+kyber512lo_bench.elf: $(LIBSRCS:.c=.o) $(LIBSRCS_ASM:.S=.o) $(KYBER512LOSRCS_C:.c=.o)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+	$(OBJSIZE) --format=berkeley $@
+
+slm/kyber512lo_bench.txt: kyber512lo_bench.srec
+	cd slm && $(SRECTOSLM) ../$^; cp spi_stim.txt ../../../TEST/slm_files; cp spi_stim.txt ../../../TEST/slm_files/kyber512_lo
 
 
 ######## KYBER512HW TARGET ########
@@ -560,6 +588,7 @@ clean:
 	rm -f $(NEWHOPE1024HWSRCS_C:.c=.o) $(NEWHOPE1024HWSRCS_C:.c=.o.lst) $(NEWHOPE1024HWSRCS_C:.c=.d) $(NEWHOPE1024HWSRCS:.c=.S)
 	rm -f $(NEWHOPE1024HWSRCS_ASM:.S=_asm.o) $(NEWHOPE1024HWSRCS_ASM:.S=_asm.o.lst) $(NEWHOPE1024HWSRCS_ASM:.S=_asm.d)
 	rm -f $(KYBER512SRCS_C:.c=.o) $(KYBER512SRCS_C:.c=.o.lst) $(KYBER512SRCS_C:.c=.d) $(KYBERCLEANSRCS:.c=.S)
+	rm -f $(KYBER512LOSRCS_C:.c=.o) $(KYBER512LOSRCS_C:.c=.o.lst) $(KYBER512LOSRCS_C:.c=.d)
 	rm -f $(KYBER512HWSRCS_C:.c=.o) $(KYBER512HWSRCS_C:.c=.o.lst) $(KYBER512HWSRCS_C:.c=.d) $(KYBERCLEANSRCS:.c=.S)
 	rm -f $(KYBER512HWSRCS_ASM:.S=_asm.o) $(KYBER512HWSRCS_ASM:.S=_asm.o.lst) $(KYBER512HWSRCS_ASM:.S=_asm.d)
 	rm -f $(KYBER768SRCS_C:.c=.o) $(KYBER768SRCS_C:.c=.o.lst) $(KYBER768SRCS_C:.c=.d) $(KYBERCLEANSRCS:.c=.S)
