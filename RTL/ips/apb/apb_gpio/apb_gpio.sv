@@ -93,6 +93,7 @@ module apb_gpio
     //is any bit enabled and specified interrupt happened?
     assign s_rise_int = |s_is_int_all;
 
+    // 中断逻辑
     always_ff @(posedge HCLK, negedge HRESETn)
     begin
         if(~HRESETn)
@@ -112,7 +113,8 @@ module apb_gpio
                     r_status  <=  'h0;
                  end
     end
-
+    
+    // 同步输入信号
     always_ff @(posedge HCLK, negedge HRESETn)
     begin
         if(~HRESETn)
@@ -129,8 +131,10 @@ module apb_gpio
         end
     end //always
 
+    // 寄存器读写逻辑
     always_ff @(posedge HCLK, negedge HRESETn) 
     begin
+        // 复位
         if(~HRESETn) 
         begin
             r_gpio_inten    <=  '0;
@@ -189,9 +193,11 @@ module apb_gpio
         end
         else
         begin
+            // 处理APB写操作
             if (PSEL && PENABLE && PWRITE)
             begin
                 case (s_apb_addr)
+                // 命中不同寄存器地址，写入不同寄存器
                 `REG_PADDIR:
                     r_gpio_dir      <= PWDATA;
                 `REG_PADOUT:
@@ -205,6 +211,7 @@ module apb_gpio
                 `REG_POWEREVENT:
                     r_powerevent    <= PWDATA;
                 `REG_PADCFG0:
+                // 每个PADCFG寄存器配置4个GPIO的pad配置，每个配置6位
                 begin
                     gpio_padcfg[0]  <= PWDATA[5:0]  ;
                     gpio_padcfg[1]  <= PWDATA[13:8] ;
@@ -267,6 +274,7 @@ module apb_gpio
 
     always_comb
     begin
+        // 处理APB读操作
         case (s_apb_addr)
         `REG_PADDIR:
             PRDATA = r_gpio_dir;
