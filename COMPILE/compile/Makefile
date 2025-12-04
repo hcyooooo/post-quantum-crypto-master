@@ -54,6 +54,7 @@ KYBER1024PREFIX = ../src/PQClean/crypto_kem/kyber1024/clean
 LIGHTSABERPREFIX = ../src/PQClean/crypto_kem/lightsaber/clean
 SABERPREFIX = ../src/PQClean/crypto_kem/saber/clean
 FIRESABERPREFIX = ../src/PQClean/crypto_kem/firesaber/clean
+NTT_APB_TEST_SRCS_C = ../src/loosely_optimized_code/ntt_hw_apb_test.c
 
 
 ########################
@@ -429,6 +430,16 @@ kyber512hw_bench.elf: $(LIBSRCS:.c=.o) $(LIBSRCS_ASM:.S=.o) $(KYBER512HWSRCS_C:.
 slm/kyber512hw_bench.txt: kyber512hw_bench.srec
 	cd slm && $(SRECTOSLM) ../$^; cp spi_stim.txt ../../../TEST/slm_files; cp spi_stim.txt ../../../TEST/slm_files/kyber512_ext
 
+######## NTT_APB_TEST TARGET ########
+ntt_apb_test: INCDIR += -I../src/loosely_optimized_code
+ntt_apb_test: ntt_apb_test.elf slm/ntt_apb_test.txt
+
+ntt_apb_test.elf: $(LIBSRCS:.c=.o) $(LIBSRCS_ASM:.S=.o) $(NTT_APB_TEST_SRCS_C:.c=.o)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+	$(OBJSIZE) --format=berkeley $@
+
+slm/ntt_apb_test.txt: ntt_apb_test.srec
+	cd slm && $(SRECTOSLM) ../$^; cp spi_stim.txt ../../../TEST/slm_files; cp spi_stim.txt ../../../TEST/slm_files/ntt_apb_test
 
 ######## KYBER768 TARGET ########
 kyber768_bench: INCDIR += -I../src/PQClean/crypto_kem/kyber768/clean
@@ -603,6 +614,7 @@ clean:
 	rm -f $(SABERHWSRCS_C:.c=.o) $(SABERHWSRCS_C:.c=.o.lst) $(SABERHWSRCS_C:.c=.d) $(SABERHWSRCS_C:.c=.S)
 	rm -f $(FIRESABERSRCS_C:.c=.o) $(FIRESABERSRCS_C:.c=.o.lst) $(FIRESABERSRCS_C:.c=.d) $(FIRESABERSRCS_C:.c=.S)
 	rm -f $(FIRESABERHWSRCS_C:.c=.o) $(FIRESABERHWSRCS_C:.c=.o.lst) $(FIRESABERHWSRCS_C:.c=.d) $(FIRESABERHWSRCS_C:.c=.S)
+	rm -f $(NTT_APB_TEST_SRCS_C:.c=.o) $(NTT_APB_TEST_SRCS_C:.c=.o.lst) $(NTT_APB_TEST_SRCS_C:.c=.d)
 	rm -f *.elf *.srec *.siz *.map
 	rm -f slm/flash_stim.slm
 	rm -f slm/l2_ram_cut0_hi.slm

@@ -12,6 +12,24 @@
 //              the NTT core.
 //////////////////////////////////////////////////////////////////////////////////
 
+`define REG_CMD        12'h000
+`define REG_CONFIG     12'h004
+`define REG_PARAM_N    12'h008
+`define REG_MODULUS    12'h00C
+`define REG_MIN_QINV   12'h010
+`define REG_SINGLE_IDX 12'h014
+`define REG_PQ_OP      12'h018
+`define REG_ALU_CTRL   12'h01C
+`define REG_OP_A       12'h020
+`define REG_OP_B       12'h024
+`define REG_OP_C       12'h028
+`define REG_RESULT1    12'h02C
+`define REG_RESULT2    12'h030
+`define REG_STATUS     12'h034
+`define REG_IRQ_MASK   12'h038
+`define REG_RF_BASE    12'h100
+`define REG_RF_LAST    (`REG_RF_BASE + (1 << ADDR_WIDTH) * 4)
+
 module apb_ntt_if
   #(
     parameter int unsigned APB_ADDR_WIDTH = 12,
@@ -36,23 +54,6 @@ module apb_ntt_if
   );
 
   localparam int unsigned RF_DEPTH = 2 ** ADDR_WIDTH;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_CMD        = 12'h000;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_CONFIG     = 12'h004;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_PARAM_N    = 12'h008;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_MODULUS    = 12'h00C;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_MIN_QINV   = 12'h010;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_SINGLE_IDX = 12'h014;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_PQ_OP      = 12'h018;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_ALU_CTRL   = 12'h01C;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_OP_A       = 12'h020;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_OP_B       = 12'h024;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_OP_C       = 12'h028;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_RESULT1    = 12'h02C;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_RESULT2    = 12'h030;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_STATUS     = 12'h034;
-  localparam logic [APB_ADDR_WIDTH-1:0] REG_IRQ_MASK   = 12'h038;
-  localparam logic [APB_ADDR_WIDTH-1:0] RF_WINDOW_BASE = 12'h100;
-  localparam logic [APB_ADDR_WIDTH-1:0] RF_WINDOW_LAST = RF_WINDOW_BASE + RF_DEPTH * 4;
 
   // APB decoding
   logic apb_access;
@@ -70,24 +71,24 @@ module apb_ntt_if
   assign apb_read   = apb_access & (~PWRITE);
   assign addr_aligned = {PADDR[APB_ADDR_WIDTH-1:2], 2'b00};
 
-  assign cmd_sel      = (addr_aligned == REG_CMD);
-  assign cfg_sel      = (addr_aligned == REG_CONFIG);
-  assign param_sel    = (addr_aligned == REG_PARAM_N);
-  assign modulus_sel  = (addr_aligned == REG_MODULUS);
-  assign min_sel      = (addr_aligned == REG_MIN_QINV);
-  assign idx_sel      = (addr_aligned == REG_SINGLE_IDX);
-  assign pq_op_sel    = (addr_aligned == REG_PQ_OP);
-  assign alu_ctrl_sel = (addr_aligned == REG_ALU_CTRL);
-  assign opa_sel      = (addr_aligned == REG_OP_A);
-  assign opb_sel      = (addr_aligned == REG_OP_B);
-  assign opc_sel      = (addr_aligned == REG_OP_C);
-  assign res1_sel     = (addr_aligned == REG_RESULT1);
-  assign res2_sel     = (addr_aligned == REG_RESULT2);
-  assign status_sel   = (addr_aligned == REG_STATUS);
-  assign irq_mask_sel = (addr_aligned == REG_IRQ_MASK);
+  assign cmd_sel      = (addr_aligned == `REG_CMD);
+  assign cfg_sel      = (addr_aligned == `REG_CONFIG);
+  assign param_sel    = (addr_aligned == `REG_PARAM_N);
+  assign modulus_sel  = (addr_aligned == `REG_MODULUS);
+  assign min_sel      = (addr_aligned == `REG_MIN_QINV);
+  assign idx_sel      = (addr_aligned == `REG_SINGLE_IDX);
+  assign pq_op_sel    = (addr_aligned == `REG_PQ_OP);
+  assign alu_ctrl_sel = (addr_aligned == `REG_ALU_CTRL);
+  assign opa_sel      = (addr_aligned == `REG_OP_A);
+  assign opb_sel      = (addr_aligned == `REG_OP_B);
+  assign opc_sel      = (addr_aligned == `REG_OP_C);
+  assign res1_sel     = (addr_aligned == `REG_RESULT1);
+  assign res2_sel     = (addr_aligned == `REG_RESULT2);
+  assign status_sel   = (addr_aligned == `REG_STATUS);
+  assign irq_mask_sel = (addr_aligned == `REG_IRQ_MASK);
 
-  assign rf_sel = (addr_aligned >= RF_WINDOW_BASE) && (addr_aligned < RF_WINDOW_LAST);
-  assign rf_index = (addr_aligned - RF_WINDOW_BASE) >> 2;
+  assign rf_sel = (addr_aligned >= `REG_RF_BASE) && (addr_aligned < `REG_RF_LAST);
+  assign rf_index = (addr_aligned - `REG_RF_BASE) >> 2;
 
   // Register storage
   logic [10:0] param_n_reg;
